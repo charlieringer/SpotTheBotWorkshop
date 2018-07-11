@@ -12,14 +12,11 @@ def main(args):
 	#Load the data in what ever format was specified
 	#Either ts - Time Series or features - using hand crafted features
 	if args.data_mode == 'ts':
-		x_train, y_train = loadTimeSeries(args.train_data)
-		x_test, y_test = loadTimeSeries(args.test_data)
+		x_train, y_train, _, _ = loadTimeSeries(args.train_data, 1)
 
 		x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1] * x_train.shape[2]))
-		x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1] * x_test.shape[2]))
 	elif args.data_mode == 'features':
-		x_train, y_train = loadFeatures(args.train_data)
-		x_test, y_test = loadFeatures(args.test_data)
+		x_train, y_train, _, _ = loadFeatures(args.train_data)
 	else: 
 		print("Error no data mode called ", args.mode, ". Exiting.")
 		return
@@ -30,14 +27,14 @@ def main(args):
 	else:
 		print("Error no model called ", args.model, ". Exiting.")
 		return
-	preds = model.fit_predict(x_test)
 
-	fig = plt.figure(0)
-	ax = Axes3D(fig, rect=[0, 0, .95, 1], elev=48, azim=134)
+	preds = model.fit_predict(x_train)
 
-	x_test_decomp = PCA(n_components=3).fit_transform(x_test)
-	ax.scatter(x_test_decomp[:, 0], x_test_decomp[:, 1], x_test_decomp[:, 2],
-	           c=preds.astype(np.float), edgecolor='k')
+	fig = plt.figure()
+	ax = fig.add_subplot(1, 2, 1, projection='3d')
+
+	x_test_decomp = PCA(n_components=3).fit_transform(x_train)
+	ax.scatter(x_test_decomp[:, 0], x_test_decomp[:, 1], x_test_decomp[:, 2], c=preds.astype(np.float), edgecolor='k')
 
 	ax.w_xaxis.set_ticklabels([])
 	ax.w_yaxis.set_ticklabels([])
@@ -46,15 +43,9 @@ def main(args):
 	ax.set_ylabel('PC 2')
 	ax.set_zlabel('PC 3')
 	ax.set_title('Clusters')
-	ax.dist = 12
 
-	fig = plt.figure(1)
-	ax2 = Axes3D(fig, rect=[0, 0, .95, 1], elev=48, azim=134)
-
-	x_test_decomp = PCA(n_components=3).fit_transform(x_test)
-	ax2.scatter(x_test_decomp[:, 0], x_test_decomp[:, 1], x_test_decomp[:, 2],
-	           c=y_test.astype(np.float), edgecolor='k')
-
+	ax2 = fig.add_subplot(1, 2, 2, projection='3d')
+	ax2.scatter(x_test_decomp[:, 0], x_test_decomp[:, 1], x_test_decomp[:, 2], c=y_train.astype(np.float), edgecolor='k')
 	ax2.w_xaxis.set_ticklabels([])
 	ax2.w_yaxis.set_ticklabels([])
 	ax2.w_zaxis.set_ticklabels([])
@@ -62,8 +53,7 @@ def main(args):
 	ax2.set_ylabel('PC 2')
 	ax2.set_zlabel('PC 3')
 	ax2.set_title('Ground Truth')
-	ax2.dist = 12
-
+	
 	plt.show()
 
 if __name__ == '__main__':

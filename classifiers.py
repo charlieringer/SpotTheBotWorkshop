@@ -51,14 +51,12 @@ def main(args):
 	#Load the data in what ever format was specified
 	#Either ts - Time Series or features - using hand crafted features
 	if args.data_mode == 'ts':
-		x_train, y_train = loadTimeSeries(args.train_data)
-		x_test, y_test = loadTimeSeries(args.test_data)
+		x_train, y_train, x_test, y_test = loadTimeSeries(args.train_data, 0.8)
 		if(args.model != 'lstmNN'):
 			x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1] * x_train.shape[2]))
 			x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1] * x_test.shape[2]))
 	elif args.data_mode == 'features':
-		x_train, y_train = loadFeatures(args.train_data)
-		x_test, y_test = loadFeatures(args.test_data)
+		x_train, y_train, x_test, y_test = loadFeatures(args.train_data, 0.8)
 	else: 
 		print("Error no data mode called ", args.mode, ". Exiting.")
 		return

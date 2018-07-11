@@ -2,6 +2,20 @@ import csv
 import numpy as np
 from keras.utils import to_categorical
 from keras.preprocessing import sequence
+import random
+
+def splitXonY(x,y):
+	class0 = []
+	class1 = []
+
+	for i in range(0, len(x)):
+		if(y[i] == 0): class0.append(x[i])
+		else: class1.append(x[i])
+
+	random.shuffle(class0)
+	random.shuffle(class1)
+
+	return class0, class1
 
 def getFeaturesForRow(data):
 	features = []
@@ -22,7 +36,7 @@ def getFeaturesForRow(data):
 
 #Takes the raw data and returns a feature vector
 #TODO: these first 3 features probably need scaling
-def loadFeatures(file):
+def loadFeatures(file, testPercent):
 	loaded_file = open(file, 'r')
 	data = csv.reader(loaded_file)
 	rows = [[int(float(value)) for value in row if value] for row in data]
@@ -32,31 +46,27 @@ def loadFeatures(file):
 		y.append(row[0])
 		x.append(getFeaturesForRow(row[2:]))
 
-	x = np.array(x)
-	y = np.array(y)
-	
-	return x, y
+	class0, class1 = splitXonY(x,y)
 
-def loadNilActionPercent(file):
-	loaded_file = open(file, 'r')
-	data = csv.reader(loaded_file)
-	rows = [[int(float(value)) for value in row if value] for row in data]
-	x = []
-	y = []
-	for row in rows:
-		y.append(row[0])
-		features = []
-		moves = row[3:]
-		total_ticks = len(moves)
-		features.append(moves.count(0)/total_ticks)
-		x.append(features)
+	splitat0 = int(len(class0) * testPercent)
+	splitat1 = int(len(class1) * testPercent)
 
-	x = np.array(x)
-	y = np.array(y)
-	
-	return x, y
+	trainX = class0[:splitat0] + class1[:splitat1]
+	testX = class0[splitat0:] + class1[splitat1:]
 
-def loadTimeSeries(file):
+	trainY = np.concatenate((np.zeros(splitat0, dtype=int), np.ones(splitat1, dtype=int)))
+	testY = np.concatenate((np.zeros(len(class0)-splitat0, dtype=int), np.ones(len(class1)-splitat1, dtype=int)))
+
+	trainX = np.array(trainX)
+	trainY = np.array(trainY)
+
+	testX = np.array(testX)
+	testY = np.array(testY)
+
+
+	return trainX, trainY, testX, testY
+
+def loadTimeSeries(file, testPercent):
 	loaded_file = open(file, 'r')
 	data = csv.reader(loaded_file)
 	rows = [[int(float(value)) for value in row if value] for row in data]
@@ -68,6 +78,23 @@ def loadTimeSeries(file):
 
 	x = np.array(x)
 	x = sequence.pad_sequences(x)
-	y = np.array(y)
-	
-	return x, y
+
+	class0, class1 = splitXonY(x,y)
+
+	splitat0 = int(len(class0) * testPercent)
+	splitat1 = int(len(class1) * testPercent)
+
+	trainX = class0[:splitat0] + class1[:splitat1]
+	testX = class0[splitat0:] + class1[splitat1:]
+
+	trainY = np.concatenate((np.zeros(splitat0, dtype=int), np.ones(splitat1, dtype=int)))
+	testY = np.concatenate((np.zeros(len(class0)-splitat0, dtype=int), np.ones(len(class1)-splitat1, dtype=int)))
+
+	trainX = np.array(trainX)
+	trainY = np.array(trainY)
+
+	testX = np.array(testX)
+	testY = np.array(testY)
+
+
+	return trainX, trainY, testX, testY
