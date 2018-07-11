@@ -1,7 +1,7 @@
 import numpy as np
 from data_loader import loadTimeSeries, loadFeatures
 
-from sklearn.cluster import KMeans, DBSCAN, SpectralClustering
+from sklearn.cluster import KMeans, Birch, SpectralClustering
 from sklearn.decomposition import PCA
 
 import matplotlib.pyplot as plt
@@ -25,7 +25,7 @@ def main(args):
 		return
 
 	if args.model == 'kmeans': model = KMeans(n_clusters=2)
-	elif args.model == 'dbscan': model = DBSCAN()
+	elif args.model == 'birch': model = Birch(n_clusters=2)
 	elif args.model == 'spec': model = SpectralClustering(n_clusters=2)
 	else:
 		print("Error no model called ", args.model, ". Exiting.")
@@ -61,7 +61,7 @@ def main(args):
 	ax2.set_xlabel('PC 1')
 	ax2.set_ylabel('PC 2')
 	ax2.set_zlabel('PC 3')
-	ax.set_title('Ground Truth')
+	ax2.set_title('Ground Truth')
 	ax2.dist = 12
 
 	plt.show()
