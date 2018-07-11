@@ -1,16 +1,11 @@
 import numpy as np
 from data_loader import loadTimeSeries, loadFeatures
 
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, DBSCAN, SpectralClustering
 from sklearn.decomposition import PCA
 
 import matplotlib.pyplot as plt
-# Though the following import is not directly being used, it is required
-# for 3D projection to work
 from mpl_toolkits.mplot3d import Axes3D
-from sklearn import datasets
-
-
 
 #MAIN LOGIC
 def main(args):
@@ -29,15 +24,18 @@ def main(args):
 		print("Error no data mode called ", args.mode, ". Exiting.")
 		return
 
-	x_test_decomp = PCA(n_components=3).fit_transform(x_test)
+	if args.model == 'kmeans': model = KMeans(n_clusters=2)
+	elif args.model == 'dbscan': model = DBSCAN()
+	elif args.model == 'spec': model = SpectralClustering(n_clusters=2)
+	else:
+		print("Error no model called ", args.model, ". Exiting.")
+		return
+	preds = model.fit_predict(x_test)
 
-	model = KMeans(n_clusters=2)
-	model.fit(x_test)
-	preds = model.predict(x_test)
-
-	fig = plt.figure()
+	fig = plt.figure(0)
 	ax = Axes3D(fig, rect=[0, 0, .95, 1], elev=48, azim=134)
 
+	x_test_decomp = PCA(n_components=3).fit_transform(x_test)
 	ax.scatter(x_test_decomp[:, 0], x_test_decomp[:, 1], x_test_decomp[:, 2],
 	           c=preds.astype(np.float), edgecolor='k')
 
@@ -47,8 +45,24 @@ def main(args):
 	ax.set_xlabel('PC 1')
 	ax.set_ylabel('PC 2')
 	ax.set_zlabel('PC 3')
-	ax.set_title('')
+	ax.set_title('Clusters')
 	ax.dist = 12
+
+	fig = plt.figure(1)
+	ax2 = Axes3D(fig, rect=[0, 0, .95, 1], elev=48, azim=134)
+
+	x_test_decomp = PCA(n_components=3).fit_transform(x_test)
+	ax2.scatter(x_test_decomp[:, 0], x_test_decomp[:, 1], x_test_decomp[:, 2],
+	           c=y_test.astype(np.float), edgecolor='k')
+
+	ax2.w_xaxis.set_ticklabels([])
+	ax2.w_yaxis.set_ticklabels([])
+	ax2.w_zaxis.set_ticklabels([])
+	ax2.set_xlabel('PC 1')
+	ax2.set_ylabel('PC 2')
+	ax2.set_zlabel('PC 3')
+	ax.set_title('Ground Truth')
+	ax2.dist = 12
 
 	plt.show()
 
