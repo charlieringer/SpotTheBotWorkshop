@@ -3,15 +3,18 @@
 This repository supports the Spot the Bot Workshop at the 2018 IGGI Conference. It contains some data, in the form of game logs from humans and AIs playing video games as well as a selection of models for classifing these logs as human or AI as well as some clustering algorithms to explore the shape of the data.
 
 ## Data
-Data has been gathers from a mixture of Humans and AI agents playing the GVGAI game Aliens. Half of the data set contains data from humans playing and the other half contains AI play. There is a folder (game_logs) which contains all of the raw data. There is also a csv (`data.csv`) which contains this all of this data in a format that the classifiers and clusterers want it in, generated using `log_parser.py`. Data was gathered using the in-built logging tool provided with GVGAI with a modification to the file name to include 'human' for human players and 'ai' for ai players as this is required for `log_parser.py` to beable to assign classification based on if a human or AI was playing. 
+Data has been gathers from a mixture of Humans and AI agents playing the GVGAI game Aliens. Half of the data set contains data from humans playing and the other half contains AI play. There is a folder (game_logs) which contains all of the raw data. There is also a csv, `data.csv`, which contains this all of this data in a format that the classifiers and clusterers want it in, generated using `log_parser.py`. Data was gathered using the in-built logging tool provided with GVGAI with a modification to the file name to include 'human' for human players and 'ai' for ai players as this is required for `log_parser.py` to be able to assign classification based on if a human or AI was playing. 
 
 The `data.csv` file is in the following format:
 - Rows: Each row is a different game log
-- Coloums: 0 - Human or AI, 1 - Seed (can be ignored), 2 - Won/Lost, 3 - Game Score, 4 - Number of Game Ticks, 5 onwards - Moves for each tick where 0 - no move, 1 - left, 2 - right, 3 - up, 4 - down, 5 - use
+- Colums: 0 - Human or AI, 1 - Seed (can be ignored), 2 - Won/Lost, 3 - Game Score, 4 - Number of Game Ticks, 5 onwards - Moves for each tick where 0 - no move, 1 - left, 2 - right, 3 - up, 4 - down, 5 - use
 
-There are a varity of different ways this data can be loaded and passed to the algorithms, handled by  `data_loader.py`. Time-series data uses just the moves, in order, as input to the model. Because moves are categorical data (Left, Right etc.) they first must be 1-hot encoded (done by the data loader). Feature data used a set of 9 hand crafted features which include Won/Lost, Game Score, Number of Game Ticks, % of 'nil' actions, % of 'left' actions,  % of 'right' actions, % of 'up' actions, % of 'down' actions, % of 'use' actions.
+There are a varity of different ways this data can be loaded and passed to the algorithms, handled by  `data_loader.py`. Time-series data (`loadTimeSeries(file, testPercent)`) uses just the moves, in order, as input to the model. Because moves are categorical data (Left, Right etc.) they first must be 1-hot encoded (done by the data loader). Feature data (`loadFeatures(file, testPercent)`) used a set of 9 hand crafted features which include Won/Lost, Game Score, Number of Game Ticks, % of 'nil' actions, % of 'left' actions,  % of 'right' actions, % of 'up' actions, % of 'down' actions, % of 'use' actions.
 
-Note for those devloping their own models: 1-hot encoding for time-series data is done in the "Keras" style, e.g. [[0,0,1],[1,0,0]..], and need to be converted to the "sk-learn" style e.g. [0,0,1,1,0,0..], for sk-learn models.
+The `data_loader.py` methods also splits the data into training and test data based on a specified `testPercent`, all model provided use 80% training data and 20% test data.
+
+
+Note for those devloping their own models: 1-hot encoding for time-series data is done in the "Keras" style, e.g. [[0,0,1],[1,0,0]..], and need to be converted to the "sk-learn" style e.g. [0,0,1,1,0,0..], for sk-learn models. They also need 0 padding for each row which is shorter than the longest row.
 
 ## Classification Algorithms
 `classifiers.py` contains 7 different classification algorithms:

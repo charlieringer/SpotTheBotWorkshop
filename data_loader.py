@@ -68,7 +68,7 @@ def loadFeatures(file, testPercent):
 
 #Takes the raw data and returns a feature vector
 #TODO: these first 3 features probably need scaling
-def loadPCAx(file, testPercent):
+def loadPCA(file, testPercent):
 	loaded_file = open(file, 'r')
 	data = csv.reader(loaded_file)
 	rows = [[int(float(value)) for value in row if value] for row in data]
