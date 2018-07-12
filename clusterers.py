@@ -11,12 +11,11 @@ from mpl_toolkits.mplot3d import Axes3D
 def main(args):
 	#Load the data in what ever format was specified
 	#Either ts - Time Series or features - using hand crafted features
-	if args.data_mode == 'ts':
-		x_train, y_train, _, _ = loadTimeSeries(args.train_data, 1)
-
+	if args.data_model == 'ts':
+		x_train, y_train, _, _ = loadTimeSeries(args.data, 1)
 		x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1] * x_train.shape[2]))
-	elif args.data_mode == 'features':
-		x_train, y_train, _, _ = loadFeatures(args.train_data)
+	elif args.data_model == 'features':
+		x_train, y_train, _, _ = loadFeatures(args.data)
 	else: 
 		print("Error no data mode called ", args.mode, ". Exiting.")
 		return
@@ -59,9 +58,8 @@ def main(args):
 if __name__ == '__main__':
 	import argparse
 	parser = argparse.ArgumentParser(description='')
-	parser.add_argument('--test_data', dest='test_data')
-	parser.add_argument('--train_data', dest='train_data')
-	parser.add_argument('--data_mode', dest='data_mode', default='ts')
+	parser.add_argument('--data', dest='data')
+	parser.add_argument('--data_model', dest='data_model', default='ts')
 	parser.add_argument('--model', dest='model', default='knn')
 	args = parser.parse_args()
 	main(args)

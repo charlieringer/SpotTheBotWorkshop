@@ -50,13 +50,13 @@ def bayes_classifier():
 def main(args):
 	#Load the data in what ever format was specified
 	#Either ts - Time Series or features - using hand crafted features
-	if args.data_mode == 'ts':
-		x_train, y_train, x_test, y_test = loadTimeSeries(args.train_data, 0.8)
+	if args.data_model == 'ts':
+		x_train, y_train, x_test, y_test = loadTimeSeries(args.data, 0.8)
 		if(args.model != 'lstmNN'):
 			x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1] * x_train.shape[2]))
 			x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1] * x_test.shape[2]))
-	elif args.data_mode == 'features':
-		x_train, y_train, x_test, y_test = loadFeatures(args.train_data, 0.8)
+	elif args.data_model == 'features':
+		x_train, y_train, x_test, y_test = loadFeatures(args.data, 0.8)
 	else: 
 		print("Error no data mode called ", args.mode, ". Exiting.")
 		return
@@ -67,11 +67,7 @@ def main(args):
 	elif args.model == "svc": model = svc_classifier()
 	elif args.model == "dtree": model = dtree_classifier()
 	elif args.model == "bayes": model = bayes_classifier()
-	elif args.model == 'denseNN': 
-		if(args.data_mode == 'ts'):
-			print("Error cannot use denseNN with time series data. Exiting.")
-			return
-		model = dense_classifier((x_train.shape[1],))
+	elif args.model == 'denseNN': model = dense_classifier((x_train.shape[1],))
 	elif args.model == 'lstmNN': 
 		if(args.data_mode == 'features'):
 			print("Error cannot use denseNN with feature data. Exiting.")
@@ -122,9 +118,8 @@ def main(args):
 if __name__ == '__main__':
 	import argparse
 	parser = argparse.ArgumentParser(description='')
-	parser.add_argument('--test_data', dest='test_data')
-	parser.add_argument('--train_data', dest='train_data')
-	parser.add_argument('--data_mode', dest='data_mode', default='ts')
+	parser.add_argument('--data', dest='data')
+	parser.add_argument('--data_model', dest='data_model', default='ts')
 	parser.add_argument('--model', dest='model', default='knn')
 	args = parser.parse_args()
 	main(args)
