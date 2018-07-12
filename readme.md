@@ -36,14 +36,25 @@ Possible arguments are:
 - `--data_model`: `ts` - Time Series data, `features` - 9 hand crafted features (see Data for more details), `pca` - 3 features decomposed from the whole data set using PCA. NOT YET IMPLEMENTED
 - `--data`: A .csv containing the player logs 
 
-
 ## Clusterering Algorithms
 `clusterers.py` contains 3 different clustering algorithms:
-- k-Means 
-- Birch
+- k-Means Clustering
+- Birch Clustering
 - Spectral Clustering
+
+### Using clusterers.py
+A typical command looks like this: `python3 clusterers.py --data=your_data.csv --data_mode=features --model=kmeans`. This will fit the model specified by `--model` on whole data set (ignoring classes) built from the data in the file passed into `--data` using whichever data model is specifed by `--data_model`. Then PCA is used to decompose the data into 3 features so it can be projected onto a 3d graph. The clustered data along with the ground truth data is then projected side by side into interactable 3d graphs, allowing you to explore the data.
+
+All models can be used on all data models.
+
+Possible arguments are:
+- `--model`: `kmeans` - k-Means Clustering, `birch` - Birch Clustering, `spec`- Spectral Clustering
+- `--data_model`: `ts` - Time Series data, `features` - 9 hand crafted features (see Data for more details), `pca` - 3 features decomposed from the whole data set using PCA. NOT YET IMPLEMENTED
+- `--data`: A .csv containing the player logs 
 
 ## Notes
 More infomation about GVGAI can be found at: http://www.gvgai.net
+
 All non-Neural Network models are implemented using scikit-learn - http://scikit-learn.org/
+
 All Nueral Network models are implemented using Keras - https://keras.io/
