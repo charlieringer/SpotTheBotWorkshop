@@ -33,18 +33,7 @@ def __getFeaturesForRow(data):
 
 	return features
 
-#Takes the raw data and returns a feature vector
-#TODO: these first 3 features probably need scaling
-def loadFeatures(file, testPercent):
-	loaded_file = open(file, 'r')
-	data = csv.reader(loaded_file)
-	rows = [[int(float(value)) for value in row if value] for row in data]
-	x = []
-	y = []
-	for row in rows:
-		y.append(row[0])
-		x.append(__getFeaturesForRow(row[2:]))
-
+def __arrangeDataSets(x, y, testPercent):
 	class0, class1 = __splitXonY(x,y)
 
 	splitat0 = int(len(class0) * testPercent)
@@ -62,8 +51,31 @@ def loadFeatures(file, testPercent):
 	testX = np.array(testX)
 	testY = np.array(testY)
 
+	permutation_train = np.random.permutation(trainX.shape[0])
+	permutation_test = np.random.permutation(testX.shape[0])
+
+	trainX = trainX[permutation_train]
+	trainY = trainY[permutation_train]
+
+	testX = testX[permutation_test]
+	testY = testY[permutation_test]
 
 	return trainX, trainY, testX, testY
+
+
+#Takes the raw data and returns a feature vector
+#TODO: these first 3 features probably need scaling
+def loadFeatures(file, testPercent):
+	loaded_file = open(file, 'r')
+	data = csv.reader(loaded_file)
+	rows = [[int(float(value)) for value in row if value] for row in data]
+	x = []
+	y = []
+	for row in rows:
+		y.append(row[0])
+		x.append(__getFeaturesForRow(row[2:]))
+
+	return __arrangeDataSets(x,y,testPercent)
 
 #Takes the raw data and returns a feature vector
 #TODO: these first 3 features probably need scaling
@@ -77,27 +89,8 @@ def loadPCA(file, testPercent):
 		y.append(row[0])
 		x.append(getFeaturesForRow(row[2:]))
 
-	class0, class1 = __splitXonY(x,y)
-
-	splitat0 = int(len(class0) * testPercent)
-	splitat1 = int(len(class1) * testPercent)
-
-	trainX = class0[:splitat0] + class1[:splitat1]
-	testX = class0[splitat0:] + class1[splitat1:]
-
-	trainY = np.concatenate((np.zeros(splitat0, dtype=int), np.ones(splitat1, dtype=int)))
-	testY = np.concatenate((np.zeros(len(class0)-splitat0, dtype=int), np.ones(len(class1)-splitat1, dtype=int)))
-
-	trainX = np.array(trainX)
-	trainY = np.array(trainY)
-
+	return __arrangeDataSets(x,y,testPercent)
 	
-
-	testX = np.array(testX)
-	testY = np.array(testY)
-
-
-	return trainX, trainY, testX, testY
 
 def loadTimeSeries(file, testPercent):
 	loaded_file = open(file, 'r')
@@ -112,22 +105,4 @@ def loadTimeSeries(file, testPercent):
 	x = np.array(x)
 	x = sequence.pad_sequences(x)
 
-	class0, class1 = __splitXonY(x,y)
-
-	splitat0 = int(len(class0) * testPercent)
-	splitat1 = int(len(class1) * testPercent)
-
-	trainX = class0[:splitat0] + class1[:splitat1]
-	testX = class0[splitat0:] + class1[splitat1:]
-
-	trainY = np.concatenate((np.zeros(splitat0, dtype=int), np.ones(splitat1, dtype=int)))
-	testY = np.concatenate((np.zeros(len(class0)-splitat0, dtype=int), np.ones(len(class1)-splitat1, dtype=int)))
-
-	trainX = np.array(trainX)
-	trainY = np.array(trainY)
-
-	testX = np.array(testX)
-	testY = np.array(testY)
-
-
-	return trainX, trainY, testX, testY
+	return __arrangeDataSets(x,y,testPercent)
