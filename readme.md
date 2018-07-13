@@ -11,7 +11,7 @@ The `data.csv` file is in the following format:
 
 There are a varity of different ways this data can be loaded and passed to the algorithms, handled by  `data_loader.py`. Time-series data (`loadTimeSeries(file, testPercent)`) uses just the moves, in order, as input to the model. Because moves are categorical data (Left, Right etc.) they first must be 1-hot encoded (done by the data loader). Feature data (`loadFeatures(file, testPercent)`) used a set of 9 hand crafted features which include Won/Lost, Game Score, Number of Game Ticks, % of 'nil' actions, % of 'left' actions,  % of 'right' actions, % of 'up' actions, % of 'down' actions, % of 'use' actions.
 
-The `data_loader.py` methods also splits the data into training and test data based on a specified `testPercent`, all model provided use 80% training data and 20% test data.
+The `data_loader.py` methods also splits the data into training and test data based on a specified `testPercent`, all classification models provided use 80% training data and 20% test data.
 
 
 Note for those devloping their own models: 1-hot encoding for time-series data is done in the "Keras" style, e.g. [[0,0,1],[1,0,0]..], and need to be converted to the "sk-learn" style e.g. [0,0,1,1,0,0..], for sk-learn models. They also need 0 padding for each row which is shorter than the longest row.
@@ -23,7 +23,7 @@ Note for those devloping their own models: 1-hot encoding for time-series data i
 - Support Vector Classifier
 - Decision Tree
 - Gaussian Naive Bayes
-- Dense, Fully-Connected Neural Network
+- Multi-Layer Perceptron
 - Long Short-Term Memory Neural Network
 
 ### Using classifiers.py
@@ -32,7 +32,7 @@ A typical command looks like this: `python3 classifiers.py --data=your_data.csv 
 All models can be used on all data models with the excepting of the Long Short-Term Memory Neural Network which only works with Time-Series data.
 
 Possible arguments are:
-- `--model`: `knn` - k-Nearest Neighbour, `logr` - Logistic Regression, `svc`- Support Vector Classifier, `dtree` - Decision Tree, `bayes` - Gaussian Naive Bayes, `denseNN` - Dense, Fully-Connected Neural Network, `lstmNN` - Long Short-Term Memory Neural Network.
+- `--model`: `knn` - k-Nearest Neighbour, `logr` - Logistic Regression, `svc`- Support Vector Classifier, `dtree` - Decision Tree, `bayes` - Gaussian Naive Bayes, `mlp` - Multi-Layer Perceptron, `lstm` - Long Short-Term Memory Neural Network.
 - `--data_model`: `ts` - Time Series data, `features` - 9 hand crafted features (see Data for more details), `pca` - 3 features decomposed from the whole data set using PCA. NOT YET IMPLEMENTED
 - `--data`: A .csv containing the player logs 
 

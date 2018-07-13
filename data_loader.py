@@ -2,9 +2,8 @@ import csv
 import numpy as np
 from keras.utils import to_categorical
 from keras.preprocessing import sequence
-import random
 
-def splitXonY(x,y):
+def __splitXonY(x,y):
 	class0 = []
 	class1 = []
 
@@ -12,12 +11,12 @@ def splitXonY(x,y):
 		if(y[i] == 0): class0.append(x[i])
 		else: class1.append(x[i])
 
-	random.shuffle(class0)
-	random.shuffle(class1)
+	np.random.shuffle(class0)
+	np.random.shuffle(class1)
 
 	return class0, class1
 
-def getFeaturesForRow(data):
+def __getFeaturesForRow(data):
 	features = []
 	features.append(data[0])
 	features.append(data[1])
@@ -44,9 +43,9 @@ def loadFeatures(file, testPercent):
 	y = []
 	for row in rows:
 		y.append(row[0])
-		x.append(getFeaturesForRow(row[2:]))
+		x.append(__getFeaturesForRow(row[2:]))
 
-	class0, class1 = splitXonY(x,y)
+	class0, class1 = __splitXonY(x,y)
 
 	splitat0 = int(len(class0) * testPercent)
 	splitat1 = int(len(class1) * testPercent)
@@ -78,7 +77,7 @@ def loadPCA(file, testPercent):
 		y.append(row[0])
 		x.append(getFeaturesForRow(row[2:]))
 
-	class0, class1 = splitXonY(x,y)
+	class0, class1 = __splitXonY(x,y)
 
 	splitat0 = int(len(class0) * testPercent)
 	splitat1 = int(len(class1) * testPercent)
@@ -91,6 +90,8 @@ def loadPCA(file, testPercent):
 
 	trainX = np.array(trainX)
 	trainY = np.array(trainY)
+
+	
 
 	testX = np.array(testX)
 	testY = np.array(testY)
@@ -111,7 +112,7 @@ def loadTimeSeries(file, testPercent):
 	x = np.array(x)
 	x = sequence.pad_sequences(x)
 
-	class0, class1 = splitXonY(x,y)
+	class0, class1 = __splitXonY(x,y)
 
 	splitat0 = int(len(class0) * testPercent)
 	splitat1 = int(len(class1) * testPercent)

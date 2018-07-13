@@ -67,8 +67,8 @@ def main(args):
 	elif args.model == "svc": model = svc_classifier()
 	elif args.model == "dtree": model = dtree_classifier()
 	elif args.model == "bayes": model = bayes_classifier()
-	elif args.model == 'denseNN': model = dense_classifier((x_train.shape[1],))
-	elif args.model == 'lstmNN': 
+	elif args.model == 'mlp': model = dense_classifier((x_train.shape[1],))
+	elif args.model == 'lstm': 
 		if(args.data_mode == 'features'):
 			print("Error cannot use denseNN with feature data. Exiting.")
 			return
