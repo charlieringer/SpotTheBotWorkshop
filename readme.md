@@ -24,7 +24,7 @@ Note for those devloping their own models: 1-hot encoding for time-series data i
 - Decision Tree
 - Gaussian Naive Bayes
 - Multi-Layer Perceptron
-- Long Short-Term Memory Neural Network
+- Recurrent Neural Network (GRU)
 
 ### Using classifiers.py
 A typical command looks like this: `python3 classifiers.py --data=your_data.csv --data_mode=features --model=knn`. This will fit the model specified by `--model` on a test dataset built from 80% of the data in the file passed into `--data` using whichever data model is specifed by `--data_model`. It will then use this model to predict the class for the remaining 20% of the data (the test set) and based on this performance output some descriptive values based on the performance, including accuracy, percision, recall, specificity and a confusion matrix.
@@ -32,7 +32,7 @@ A typical command looks like this: `python3 classifiers.py --data=your_data.csv 
 All models can be used on all data models with the excepting of the Long Short-Term Memory Neural Network which only works with Time-Series data.
 
 Possible arguments are:
-- `--model`: `knn` - k-Nearest Neighbour, `logr` - Logistic Regression, `svc`- Support Vector Classifier, `dtree` - Decision Tree, `bayes` - Gaussian Naive Bayes, `mlp` - Multi-Layer Perceptron, `lstm` - Long Short-Term Memory Neural Network.
+- `--model`: `knn` - k-Nearest Neighbour, `logr` - Logistic Regression, `svc`- Support Vector Classifier, `dtree` - Decision Tree, `bayes` - Gaussian Naive Bayes, `mlp` - Multi-Layer Perceptron, `RNN` - Recurrent Neural Network.
 - `--data_model`: `ts` - Time Series data, `features` - 9 hand crafted features (see Data for more details), `pca` - 3 features decomposed from the whole data set using PCA. NOT YET IMPLEMENTED
 - `--data`: A .csv containing the player logs 
 
