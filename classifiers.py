@@ -5,7 +5,7 @@ from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from data_loader import loadTimeSeries, loadFeatures
-from keras.layers import Input, Dense, rnn, GRU
+from keras.layers import Input, Dense, GRU
 from keras.models import Model
 
 #MODEL

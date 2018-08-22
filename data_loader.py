@@ -68,12 +68,13 @@ def __arrangeDataSets(x, y, testPercent):
 def loadFeatures(file, testPercent):
 	loaded_file = open(file, 'r')
 	data = csv.reader(loaded_file)
+	next(data,None)
 	rows = [[int(float(value)) for value in row if value] for row in data]
 	x = []
 	y = []
 	for row in rows:
 		y.append(row[0])
-		x.append(__getFeaturesForRow(row[2:]))
+		x.append(__getFeaturesForRow(row[5:]))
 
 	return __arrangeDataSets(x,y,testPercent)
 
@@ -82,12 +83,13 @@ def loadFeatures(file, testPercent):
 def loadPCA(file, testPercent):
 	loaded_file = open(file, 'r')
 	data = csv.reader(loaded_file)
+	next(data,None)
 	rows = [[int(float(value)) for value in row if value] for row in data]
 	x = []
 	y = []
 	for row in rows:
 		y.append(row[0])
-		x.append(getFeaturesForRow(row[2:]))
+		x.append(getFeaturesForRow(row[5:]))
 
 	return __arrangeDataSets(x,y,testPercent)
 	
@@ -95,12 +97,13 @@ def loadPCA(file, testPercent):
 def loadTimeSeries(file, testPercent):
 	loaded_file = open(file, 'r')
 	data = csv.reader(loaded_file)
+	next(data,None)
 	rows = [[int(float(value)) for value in row if value] for row in data]
 	x = []
 	y = []
 	for row in rows:
 		y.append(row[0])
-		x.append(to_categorical(row[5:], num_classes=6))
+		x.append(to_categorical(row[8:], num_classes=6))
 
 	x = np.array(x)
 	x = sequence.pad_sequences(x)

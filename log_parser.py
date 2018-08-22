@@ -4,6 +4,8 @@ def main(args):
 	outfile = open(args.out_file,  'a')
 	files = listdir(args.in_dir)
 
+	outfile.write("Human/AI, ID, GameID, LevelID, Seed, Win, Score, Tick\n")
+
 	for file in files:
 		loaded_file = open(args.in_dir + "/" +file,  'r')
 		outstr = ""
@@ -11,12 +13,9 @@ def main(args):
 		for line in loaded_file:
 			if(first):
 				first = False
-				if("human" in file):
-					outstr += "1,"
-				else:
-					outstr += "0,"
+				out = getFormatedFileNameData(file)
 
-				out = ""
+				
 				for char in line:
 					if char == " ":
 						outstr += "%s," % (out)
@@ -40,7 +39,28 @@ def main(args):
 		outstr+= "\n"
 		outfile.write(outstr)
 
+def getFormatedFileNameData(fileName):
+	formattedString = ""
+	if("human" in fileName):
+		formattedString += "1,"
+	else:
+		formattedString += "0,"
 
+	gameID = ''
+	levelID = ''
+	userID = ''
+
+	parsingID = 0
+	for char in fileName:
+		if char == '_':
+			parsingID+=1
+			continue
+		if parsingID == 1: gameID+=char
+		elif parsingID == 2: levelID+=char
+		elif parsingID == 3: userID+=char
+	return formattedString + userID +"," + gameID +"," + levelID +","
+
+	
 if __name__ == '__main__':
 	import argparse
 	parser = argparse.ArgumentParser(description='')
