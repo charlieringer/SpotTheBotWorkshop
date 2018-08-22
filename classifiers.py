@@ -86,6 +86,7 @@ def main(args):
 	#Then predict the values for our test data
 	preds = model.predict(x_test)
 
+
 	#once we have our predictions we can evalute them
 	#Start by building an empty confusion matrix
 	confMat = [[0,0],[0,0]]
