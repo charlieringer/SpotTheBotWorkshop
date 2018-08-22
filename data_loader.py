@@ -64,7 +64,6 @@ def __arrangeDataSets(x, y, testPercent):
 
 
 #Takes the raw data and returns a feature vector
-#TODO: these first 3 features probably need scaling
 def loadFeatures(file, testPercent):
 	loaded_file = open(file, 'r')
 	data = csv.reader(loaded_file)
@@ -78,22 +77,8 @@ def loadFeatures(file, testPercent):
 
 	return __arrangeDataSets(x,y,testPercent)
 
-#Takes the raw data and returns a feature vector
-#TODO: these first 3 features probably need scaling
-def loadPCA(file, testPercent):
-	loaded_file = open(file, 'r')
-	data = csv.reader(loaded_file)
-	next(data,None)
-	rows = [[int(float(value)) for value in row if value] for row in data]
-	x = []
-	y = []
-	for row in rows:
-		y.append(row[0])
-		x.append(getFeaturesForRow(row[5:]))
-
-	return __arrangeDataSets(x,y,testPercent)
 	
-
+#Takes the raw data and returns a time series data
 def loadTimeSeries(file, testPercent):
 	loaded_file = open(file, 'r')
 	data = csv.reader(loaded_file)
