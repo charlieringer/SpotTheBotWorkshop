@@ -73,7 +73,7 @@ def loadFeatures(file, testPercent):
 	y = []
 	for row in rows:
 		y.append(row[0])
-		x.append(__getFeaturesForRow(row[5:]))
+		x.append(__getFeaturesForRow(row[6:]))
 
 	return __arrangeDataSets(x,y,testPercent)
 
@@ -88,7 +88,7 @@ def loadTimeSeries(file, testPercent):
 	y = []
 	for row in rows:
 		y.append(row[0])
-		x.append(to_categorical(row[8:], num_classes=6))
+		x.append(to_categorical(row[9:], num_classes=6))
 
 	x = np.array(x)
 	x = sequence.pad_sequences(x)

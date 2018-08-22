@@ -4,7 +4,7 @@ def main(args):
 	outfile = open(args.out_file,  'a')
 	files = listdir(args.in_dir)
 
-	outfile.write("Human/AI, ID, GameID, LevelID, Seed, Win, Score, Tick\n")
+	outfile.write("Human/AI, ID, Skill, GameID, LevelID, Seed, Win, Score, Tick\n")
 
 	for file in files:
 		loaded_file = open(args.in_dir + "/" +file,  'r')
@@ -49,6 +49,7 @@ def getFormatedFileNameData(fileName):
 	gameID = ''
 	levelID = ''
 	userID = ''
+	skill = ''
 
 	parsingID = 0
 	for char in fileName:
@@ -58,7 +59,8 @@ def getFormatedFileNameData(fileName):
 		if parsingID == 1: gameID+=char
 		elif parsingID == 2: levelID+=char
 		elif parsingID == 3: userID+=char
-	return formattedString + userID +"," + gameID +"," + levelID +","
+		elif parsingID == 4: skill+=char
+	return formattedString + userID +"," + skill +  "," + gameID +"," + levelID +","
 
 	
 if __name__ == '__main__':
