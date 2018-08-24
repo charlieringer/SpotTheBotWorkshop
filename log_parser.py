@@ -7,6 +7,7 @@ def main(args):
 	outfile.write("Human/AI, ID, Skill, GameID, LevelID, Seed, Win, Score, Tick\n")
 
 	for file in files:
+		if not ".txt" in file: continue 
 		loaded_file = open(args.in_dir + "/" +file,  'r')
 		outstr = ""
 		first = True
