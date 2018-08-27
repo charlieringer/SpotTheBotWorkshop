@@ -3,11 +3,21 @@
 This repository supports the Spot the Bot Workshop at the 2018 IGGI Conference. It contains some data, in the form of game logs from humans and AIs playing video games as well as a selection of models for classifing these logs as human/AI as well as some clustering algorithms to explore the shape of the data.
 
 ## Data
-Data has been gathered from a mixture of Humans and AI agents playing the GVGAI game Aliens. Half of the data set contains data from humans playing and the other half contains AI play. There is a folder (game_logs) which contains all of the raw data. There is also a csv, `data.csv`, which contains this all of this data in a format that the classifiers and clusterers want it in, generated using `log_parser.py`. Data was gathered using the in-built logging tool provided with GVGAI with a modification to the file name to include 'human' for human players and 'ai' for ai players as this is required for `log_parser.py` to be able to assign classification based on if a human or AI was playing. 
+Data has been gathered from a mixture of Humans and AI agents playing the GVGAI games Aliens, Frogs and SeaQuest. Half of the data set contains data from humans playing and the other half contains AI play. There is a folder (game_logs) which contains all of the raw data. There is also a csv, `data.csv`, which contains this all of this data in a format that the classifiers and clusterers want it in, generated using `log_parser.py`. Data was gathered using the in-built logging tool provided with GVGAI with a modification to the file name to include 'human' for human players and 'ai' for ai players as this is required for `log_parser.py` to be able to assign classification based on if a human or AI was playing. 
 
 The `data.csv` file is in the following format:
 - Rows: Each row is a different game log
-- Colums: 0 - Human or AI, 1 - GameID, 2 - LevelID, 3 - PlayerID, 4 - Seed (can be ignored), 5 - Won/Lost, 6 - Game Score, 8 - Number of Game Ticks, 8 onwards - Moves for each tick where 0 - no move, 1 - left, 2 - right, 3 - up, 4 - down, 5 - use
+- Columns:
+    - 0 - Human/AI: 0 if AI, 1 if Human
+    - 1 - Skill: 0 - Low Skill, 1 - Medium Skill, 2 - High Skill. This applies to humans (deterimened through self-reporting) and AI (based on GVGAI Rankings)
+    - 2 - GameID: 0 - Aliens, 42 - Frogs, 77 - SeaQuest
+    - 3 - LevelID: 0 - 4 depending on which level was played
+    - 4 - PlayerID: Unique ID for each player/AI
+    - 5 - Seed: Random seed assigned. Can be ignored
+    - 6 - Won/Lost: 0 - Lost, 1 - Win
+    - 7 - Game Score
+    - 8 - Number of Game Ticks
+    - 9 onwards - Moves for each tick where 0 - no move, 1 - left, 2 - right, 3 - up, 4 - down, 5 - use
 
 There are two different ways this data can be loaded and passed to the algorithms, handled by  `data_loader.py`. Time-series data (`loadTimeSeries(file, testPercent)`) uses just the moves, in order, as input to the model. Because moves are categorical data (Left, Right etc.) they first must be 1-hot encoded (done by the data loader). Feature data (`loadFeatures(file, testPercent)`) uses a set of 9 hand crafted features which include Won/Lost, Game Score, Number of Game Ticks, % of 'nil' actions, % of 'left' actions,  % of 'right' actions, % of 'up' actions, % of 'down' actions, % of 'use' actions.
 
@@ -50,6 +60,17 @@ Possible arguments are:
 - `--model`: `kmeans` - k-Means Clustering, `birch` - Birch Clustering, `spec`- Spectral Clustering
 - `--data_model`: `ts` - Time Series data, `features` - 9 hand crafted features (see Data for more details), `pca` - 3 features decomposed from the whole data set using PCA. NOT YET IMPLEMENTED
 - `--data`: A .csv containing the player logs 
+
+## Dependencies
+This workshop relies on the following:
+- Python 3.6
+- Keras 2.2.0 
+- Tensorflow 1.9.0 
+- Numpy 1.14.5
+- MatPlotLib 2.1.2
+- Scikit Learn
+
+To install the relevant python packages run `setup.sh`
 
 ## Notes
 More infomation about GVGAI can be found at: http://www.gvgai.net
