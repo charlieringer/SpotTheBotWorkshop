@@ -58,7 +58,7 @@ def main(args):
 	elif args.data_model == 'features':
 		x_train, y_train, x_test, y_test = loadFeatures(args.data, 0.8)
 	else: 
-		print("Error no data mode called ", args.mode, ". Exiting.")
+		print("Error no data mode called ", args.data_model, ". Exiting.")
 		return
 
 	#Set the model to the right model depending on what arguement was passed
