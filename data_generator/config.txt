@@ -1,5 +1,4 @@
-id 5
-game 77
-level 4
-skill 2
-ai
+id 4
+game 0
+level 0
+skill 0
