@@ -15,7 +15,7 @@ def main(args):
 		x_train, y_train, _, _ = loadTimeSeries(args.data, 1)
 		x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1] * x_train.shape[2]))
 	elif args.data_model == 'features':
-		x_train, y_train, _, _ = loadFeatures(args.data)
+		x_train, y_train, _, _ = loadFeatures(args.data, 1)
 	else: 
 		print("Error no data mode called ", args.mode, ". Exiting.")
 		return
@@ -28,6 +28,16 @@ def main(args):
 		return
 
 	preds = model.fit_predict(x_train)
+
+	totalCorrect = 0
+	for i, pred in enumerate(preds):
+		if(y_train[i] == pred):
+			totalCorrect+=1
+	if(totalCorrect > len(y_train)-totalCorrect):
+		print("Prediction score: ", totalCorrect/len(y_train))
+	else:
+		print("Prediction score: ", (len(y_train)-totalCorrect)/len(y_train))
+
 
 	fig = plt.figure()
 	ax = fig.add_subplot(1, 2, 1, projection='3d')
@@ -52,6 +62,7 @@ def main(args):
 	ax2.set_ylabel('PC 2')
 	ax2.set_zlabel('PC 3')
 	ax2.set_title('Ground Truth')
+
 	
 	plt.show()
 
@@ -60,6 +71,6 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='')
 	parser.add_argument('--data', dest='data')
 	parser.add_argument('--data_model', dest='data_model', default='ts')
-	parser.add_argument('--model', dest='model', default='knn')
+	parser.add_argument('--model', dest='model', default='kmeans')
 	args = parser.parse_args()
 	main(args)
