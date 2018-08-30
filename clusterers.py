@@ -4,6 +4,8 @@ from data_loader import loadTimeSeries, loadFeatures
 from sklearn.cluster import KMeans, Birch, SpectralClustering
 from sklearn.decomposition import PCA
 
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 

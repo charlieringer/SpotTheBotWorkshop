@@ -62,15 +62,7 @@ Possible arguments are:
 - `--data`: A .csv containing the player logs 
 
 ## Dependencies
-This workshop relies on the following:
-- Python 3.6
-- Keras 2.2.0 
-- Tensorflow 1.9.0 
-- Numpy 1.14.5
-- MatPlotLib 2.1.2
-- Scikit Learn
-
-To install the relevant python packages run `setup.sh`
+This workshop relies on the packages found in `requirements.txt`.
 
 ## Notes
 More infomation about GVGAI can be found at: http://www.gvgai.net
