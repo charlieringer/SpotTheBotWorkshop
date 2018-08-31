@@ -33,11 +33,11 @@ def __getFeaturesForRow(data):
 
 	return features
 
-def __arrangeDataSets(x, y, testPercent):
+def __arrangeDataSets(x, y, trainPercent):
 	class0, class1 = __splitXonY(x,y)
 
-	splitat0 = int(len(class0) * testPercent)
-	splitat1 = int(len(class1) * testPercent)
+	splitat0 = int(len(class0) * trainPercent)
+	splitat1 = int(len(class1) * trainPercent)
 
 	trainX = class0[:splitat0] + class1[:splitat1]
 	testX = class0[splitat0:] + class1[splitat1:]
@@ -64,7 +64,7 @@ def __arrangeDataSets(x, y, testPercent):
 
 
 #Takes the raw data and returns a feature vector
-def loadFeatures(file, testPercent):
+def load_features(file, trainPercent):
 	loaded_file = open(file, 'r')
 	data = csv.reader(loaded_file)
 	next(data,None)
@@ -75,11 +75,11 @@ def loadFeatures(file, testPercent):
 		y.append(row[0])
 		x.append(__getFeaturesForRow(row[6:]))
 
-	return __arrangeDataSets(x,y,testPercent)
+	return __arrangeDataSets(x,y,trainPercent)
 
 	
 #Takes the raw data and returns a time series data
-def loadTimeSeries(file, testPercent):
+def load_time_series(file, trainPercent):
 	loaded_file = open(file, 'r')
 	data = csv.reader(loaded_file)
 	next(data,None)
@@ -93,4 +93,4 @@ def loadTimeSeries(file, testPercent):
 	x = np.array(x)
 	x = sequence.pad_sequences(x)
 
-	return __arrangeDataSets(x,y,testPercent)
+	return __arrangeDataSets(x,y,trainPercent)

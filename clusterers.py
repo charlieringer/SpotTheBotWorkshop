@@ -1,5 +1,5 @@
 import numpy as np
-from data_loader import loadTimeSeries, loadFeatures
+from data_loader import load_time_series, load_features
 
 from sklearn.cluster import KMeans, Birch, SpectralClustering
 from sklearn.decomposition import PCA
@@ -14,10 +14,10 @@ def main(args):
 	#Load the data in what ever format was specified
 	#Either ts - Time Series or features - using hand crafted features
 	if args.data_model == 'ts':
-		x_train, y_train, _, _ = loadTimeSeries(args.data, 1)
+		x_train, y_train, _, _ = load_time_series(args.data, 1)
 		x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1] * x_train.shape[2]))
 	elif args.data_model == 'features':
-		x_train, y_train, _, _ = loadFeatures(args.data, 1)
+		x_train, y_train, _, _ = load_features(args.data, 1)
 	else: 
 		print("Error no data mode called ", args.mode, ". Exiting.")
 		return
@@ -36,9 +36,9 @@ def main(args):
 		if(y_train[i] == pred):
 			totalCorrect+=1
 	if(totalCorrect > len(y_train)-totalCorrect):
-		print("Prediction score: ", totalCorrect/len(y_train))
+		print("Challenge Score: ", totalCorrect/len(y_train))
 	else:
-		print("Prediction score: ", (len(y_train)-totalCorrect)/len(y_train))
+		print("Challenge Score: ", (len(y_train)-totalCorrect)/len(y_train))
 
 
 	fig = plt.figure()
