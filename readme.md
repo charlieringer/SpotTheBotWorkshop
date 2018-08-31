@@ -36,7 +36,7 @@ Note for those devloping their own models: 1-hot encoding for time-series data i
 - Recurrent Neural Network (GRU)
 
 ### Using classifiers.py
-A typical command looks like this: `python3 classifiers.py --data=your_data.csv --data_mode=features --model=knn`. This will fit the model specified by `--model` on a test dataset built from 80% of the data in the file passed into `--data` using whichever data model is specifed by `--data_model`. It will then use this model to predict the class for the remaining 20% of the data (the test set) and based on this performance output some descriptive values based on the performance, including accuracy, percision, recall, specificity and a confusion matrix.
+A typical command looks like this: `python3 classifiers.py --data=your_data.csv --data_model=features --model=knn`. This will fit the model specified by `--model` on a test dataset built from 80% of the data in the file passed into `--data` using whichever data model is specifed by `--data_model`. It will then use this model to predict the class for the remaining 20% of the data (the test set) and based on this performance output some descriptive values based on the performance, including accuracy, percision, recall, specificity and a confusion matrix.
 
 All models can be used on all data models with the exception of the Long Short-Term Memory Neural Network which only works with Time-Series data.
 
@@ -52,7 +52,7 @@ Possible arguments are:
 - Spectral Clustering
 
 ### Using clusterers.py
-A typical command looks like this: `python3 clusterers.py --data=your_data.csv --data_mode=features --model=kmeans`. This will fit the model specified by `--model` on whole data set (ignoring classes) built from the data in the file passed into `--data` using whichever data model is specifed by `--data_model`. Then PCA is used to decompose the data into 3 features so it can be projected onto a 3d graph. The clustered data along with the ground truth data is then projected side by side into interactable 3d graphs, allowing you to explore the data.
+A typical command looks like this: `python3 clusterers.py --data=your_data.csv --data_model=features --model=kmeans`. This will fit the model specified by `--model` on whole data set (ignoring classes) built from the data in the file passed into `--data` using whichever data model is specifed by `--data_model`. Then PCA is used to decompose the data into 3 features so it can be projected onto a 3d graph. The clustered data along with the ground truth data is then projected side by side into interactable 3d graphs, allowing you to explore the data.
 
 All models can be used on all data models.
 
