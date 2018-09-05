@@ -62,7 +62,7 @@ Possible arguments are:
 - `--data`: A .csv containing the player logs 
 
 ## Dependencies
-This workshop relies on the packages found in `requirements.txt`. This can be installed with the command `pip install -r requirements.txt`.
+This workshop used Python 3 and relies on the packages found in `requirements.txt`. This can be installed with the command `pip install -r requirements.txt`.
 
 ## Notes
 More infomation about GVGAI can be found at: http://www.gvgai.net
